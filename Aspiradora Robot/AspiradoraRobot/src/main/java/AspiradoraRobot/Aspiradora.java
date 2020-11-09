@@ -20,6 +20,90 @@ y 5 diagramas de secuencia para 5 comportamientos específicos a elección.
 */
 package AspiradoraRobot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Aspiradora {
+    private ArrayList<Cepillo> cepillos;
+    private int velocidad;
+    private boolean estaPrendida;
+    private int bateria;
+    private Map<String, Integer> movimientos;
+    private ArrayList<Integer> posicion;
     
+    public Aspiradora(){
+        this.cepillos=new ArrayList<Cepillo>();
+        this.velocidad=0;
+        this.estaPrendida=false;
+        this.bateria=100;
+        this.movimientos = new HashMap<>();
+        this.posicion= new ArrayList<Integer>();
+    }
+    
+    public void inicializarCepillos(Cepillo cepilloIzquierdo, Cepillo cepilloDerecho){
+         this.cepillos.add(cepilloIzquierdo);
+         this.cepillos.add(cepilloDerecho);
+    }
+    
+    public void inicializarMovimientos (){
+        this.movimientos.put("Derecha",0);
+        this.movimientos.put("Izquierda",0);
+        this.movimientos.put("Adelante",0);
+        this.movimientos.put("Atras", 0);
+    }
+    
+    public void inicializarPosicion (){
+        this.posicion.add(0);
+        this.posicion.add(0);
+    }
+    
+      public ArrayList<Cepillo> getCepillos() {
+        return cepillos;
+    }
+
+    public void setCepillos(ArrayList<Cepillo> cepillos) {
+        this.cepillos = cepillos;
+    }
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
+
+    public boolean isEstaPrendida() {
+        return estaPrendida;
+    }
+
+    public void setEstaPrendida(boolean estaPrendida) {
+        this.estaPrendida = estaPrendida;
+    }
+
+    public int getBateria() {
+        return bateria;
+    }
+
+    public void setBateria(int bateria) {
+        this.bateria = bateria;
+    }
+
+    public Map<String, Integer> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(Map<String, Integer> movimientos) {
+        this.movimientos = movimientos;
+    }
+    
+    public void mover(String direccion){
+        inicializarMovimientos();
+        movimientos.put(direccion, 1);
+    }
+    
+    public void sePuedeMover(ArrayList<ArrayList<Suelo>> ambiente){
+        
+    }
 }

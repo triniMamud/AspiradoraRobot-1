@@ -5,6 +5,12 @@ public class Suelo {
     private boolean estaLimpio;
     private boolean esBorde;
 
+    public Suelo (){
+        this.tieneObstaculo = false;
+        this.estaLimpio = false;
+        this.esBorde = false;
+    }
+
     public boolean getEsBorde() {
         return esBorde;
     }

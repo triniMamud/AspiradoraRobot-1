@@ -5,13 +5,7 @@ public class Main {
 
     public static void main(String[] args){
 
-        int filas = cargarFilas();
-        int columnas = cargarColumnas();
 
-        Suelo[][] ambiente= new Suelo[filas][columnas];
-
-        System.out.println(ambiente.length); //3
-        System.out.println(ambiente[0].length); //2
 
     }
 
@@ -25,6 +19,16 @@ public class Main {
         System.out.print("Ingrese la cantidad de columnas: ");
 
         return Integer.parseInt(readInput());
+    }
+
+    public static void cargarAmbiente (){
+
+        Suelo[][] ambiente= new Suelo[cargarFilas()][cargarColumnas()];
+        double cantidadSuelo = ambiente.length*ambiente[0].length;
+
+        for (int i = 0; i < Math.random()*cantidadSuelo; i++) {
+            ambiente[(int) (Math.random()* ambiente.length)][(int) (Math.random()* (ambiente[0].length))].setTieneObstaculo(true);
+        }
     }
 
 

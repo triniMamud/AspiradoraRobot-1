@@ -24,16 +24,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Aspiradora {
+
+    final int posEsquivar = 2;
+    final int posMover = 1;
+
     private Cepillo[] cepillos;
     private int velocidad;
     private int bateria;
-    private Integer[] coordenadas;
+    private int posicionColumna;
+    private int posicionFila;
 
     public Aspiradora(){
         this.cepillos = new Cepillo[2];
         this.velocidad = 0;
         this.bateria = 100;
-        this.coordenadas =  new Integer[2];
+        this.posicionColumna = 0;
+        this.posicionFila = 0;
     }
 
     public void inicializarCepillos(Cepillo cepilloIzquierdo, Cepillo cepilloDerecho){
@@ -41,7 +47,7 @@ public class Aspiradora {
         this.cepillos[1] = cepilloDerecho;
     }
 
-    public String determinarSubidas (Suelo[][] ambiente){
+    public String determinarSubidas (Suelo[][] ambiente){ //p: par, i: impar
         String baja = "i";
         if (ambiente[0].length %2 == 0){
             baja = "p";
@@ -50,45 +56,59 @@ public class Aspiradora {
         return baja;
     }
 
-    public void esquivar (Suelo[][] ambiente){
-        if ("p".equals(determinarSubidas(ambiente))){
-            esquivarPorIzquierda(ambiente);
-        } else {
-            esquivarPorDerecha(ambiente);
-        }
-    }
-
-    public void esquivarPorIzquierda(Suelo[][] ambiente){
-        coordenadas[1] += 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[0] += 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[0] += 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[1] -= 1;
-        limpiar(coordenadas, ambiente);
-    }
-
-    public void esquivarPorDerecha(Suelo[][] ambiente){
-        coordenadas[1] += 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[0] -= 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[0] -= 1;
-        limpiar(coordenadas, ambiente);
-        coordenadas[1] -= 1;
-        limpiar(coordenadas, ambiente);
-    }
-
-    public void limpiar(Integer[] coordenadas, Suelo[][] ambiente) {
+    public boolean limpiar(int posicionFila, int posicionColumna, Suelo[][] ambiente) {
         if (bateria > 0 && cepilloLimpio()){
-            ambiente[coordenadas[0]][coordenadas[1]].setEstaLimpio(true);
+            ambiente[posicionFila][posicionColumna].setEstaLimpio(true);
         }
+        return ambiente[posicionFila][posicionColumna].getEstaLimpio();
+    }
+
+    public void mover(int fila, int col, Suelo[][] ambiente) {
+
+        if (!limpiar(posicionFila, posicionColumna, ambiente)){
+            System.out.println("ERROR: no se puede seguir limpiando");
+        }
+        else {
+            limpiar(posicionFila, posicionColumna, ambiente);
+            if ("p".equals(determinarSubidas(ambiente))) { //BAJO
+                if (!ambiente[posicionFila + posEsquivar][posicionColumna].getEsBorde()){
+                    if (ambiente[posicionFila + posEsquivar][posicionColumna].getTieneObstaculo()) {
+                        mover(posicionFila+posEsquivar, posicionColumna, ambiente);
+                    } else {
+                        mover(posicionFila+posMover, posicionColumna, ambiente);
+                    }
+                } else {
+                    mover(posicionFila, posicionColumna++, ambiente);
+                }
+
+            } else { //SUBO
+                if (ambiente[posicionFila + posEsquivar][posicionColumna].getTieneObstaculo()) {
+                    posicionFila = posicionFila - posEsquivar;
+                } else {
+                    posicionFila = posicionFila - posMover;
+                }
+            }
+            //bajarBateria
+            //ensuciarCepillos
+        }
+
+
+    }
+
+    public boolean chequearBorde (int fila, int columna, Suelo [][] ambiente){
+        return (ambiente[fila][columna].getEsBorde());
     }
 
     public boolean cepilloLimpio (){
         return (cepillos[0].getEstaLimpio() && cepillos[1].getEstaLimpio());
     }
+
+    public void posicionarEnOrigen (){
+        posicionFila = 0;
+        posicionColumna = 0;
+    }
+
+
 
 
 

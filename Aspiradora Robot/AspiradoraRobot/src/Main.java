@@ -1,3 +1,6 @@
+import Modelos.Ambiente;
+import Modelos.Aspiradora;
+
 import java.util.Scanner;
 
 public class Main {
@@ -5,7 +8,14 @@ public class Main {
 
     public static void main(String[] args){
 
+        Aspiradora aspiradora = new Aspiradora();
+        Ambiente ambiente = new Ambiente(cargarFilas(), cargarColumnas());
 
+        ambiente.cargarAmbiente();
+        ambiente.mostrarAmbiente();
+        aspiradora.mover(ambiente);
+        System.out.print("=================================================================\n\n");
+        ambiente.mostrarAmbiente();
 
     }
 
@@ -21,22 +31,15 @@ public class Main {
         return Integer.parseInt(readInput());
     }
 
-    public static void cargarAmbiente (){
-
-        Suelo[][] ambiente= new Suelo[cargarFilas()][cargarColumnas()];
-        double cantidadSuelo = ambiente.length*ambiente[0].length;
-
-        for (int i = 0; i < Math.random()*cantidadSuelo; i++) {
-            ambiente[(int) (Math.random()* ambiente.length)][(int) (Math.random()* (ambiente[0].length))].setTieneObstaculo(true);
-        }
-    }
-
-
-
     //Inputs
     public static String readInput (){
         Scanner readInput = new Scanner(System.in);
 
         return readInput.nextLine();
     }
+
+    //Outputs
+
+
+
 }
